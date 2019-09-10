@@ -129,8 +129,11 @@ class Brain extends Container {
         this.height = height;
     }
 
-    onReceptorActivated(note) {
-        this.sequencer.schedule(note);
+    onReceptorActivated(note, x, y) {
+        // Normalize coordinates
+        x = 2 * (x / this.width) - 1;
+        y = 2 * (y / this.height) - 1;
+        this.sequencer.schedule(note, x, y);
     }
 
     get height () {
