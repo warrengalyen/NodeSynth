@@ -22,7 +22,7 @@ class Voice {
     }
 
     get note() {
-        return this._note;
+        return this.__note;
     }
     set note(value) {
         this.__note = value;
