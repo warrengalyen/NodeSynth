@@ -21,7 +21,7 @@
 }
 
 .slider .graphics .bar {
-    stroke-linecap: square;
+    stroke-linecap: butt;
     stroke: #fff;
     fill: none;
 }
@@ -52,12 +52,21 @@
 @media screen and (max-width: 600px), (max-height: 500px) {
 
     .slider .graphics {
-        height: 80px;
-        width: 80px;
+        height: 64px;
+        width: 64px;
     }
 
     .slider .label {
+        line-height: 1.2;
         letter-spacing: 0;
+    }
+
+    .slider .label .title {
+        font-size: 8px;
+    }
+
+    .slider .label .value {
+        font-size: 11px;
     }
 }.sliders {
     -webkit-transform: translate(0, -50%);
@@ -73,7 +82,7 @@
 }
 
 .sliders .slider {
-    margin: 16px 0;
+    margin: 12px 0;
 }
 
 .toggle {
@@ -134,6 +143,6 @@
     }
 
     .sliders .slider {
-        margin: 0 8px;
+        margin: 0 6px;
     }
 }
