@@ -1,9 +1,10 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var webpack = require('webpack');
+var path = require('path');
 var isDev = process.argv.indexOf('-p') === -1;
 var config = {
-    context: __dirname + '/source',
+    context: path.resolve(__dirname + '/source'),
     entry: {
         main: './index.js'
     },
