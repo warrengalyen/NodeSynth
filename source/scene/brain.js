@@ -18,6 +18,7 @@ import Config from "../config";
 class Brain extends Container {
     constructor(width, height) {
         super();
+        this.nodes = [];
         this.width = width;
         this.height = height;
         this.sequencer = new Sequencer();
@@ -73,6 +74,8 @@ class Brain extends Container {
             neuron.x = this.width * Random.float(0.1, 0.85);
             neuron.y = this.height * Random.float(0.1, 0.9);
             this.neurons.push(neuron);
+            this.nodes.push(neuron);
+            this.makeMoveable(neuron);
             this.addChild(neuron);
         }
     }
@@ -91,6 +94,8 @@ class Brain extends Container {
             receptor.x = this.width * Random.float(0.05, 0.85);
             receptor.y = this.height * Random.float(0.05, 0.95);
             this.receptors.push(receptor);
+            this.nodes.push(receptor);
+            this.makeMoveable(receptor);
             this.addChild(receptor);
         }
     }
@@ -106,7 +111,32 @@ class Brain extends Container {
         });
     }
 
+    makeMoveable(node) {
+        node.wanderTheta = Random.float(Math.PI * 2);
+        node.wanderSpeed = Random.float(0.012, 0.05);
+        node.wanderStep = Random.float(0.08, 0.25);
+    }
+
     update(dt) {
+        // Update positions
+        const wander = Config.wander.value;
+        if (wander > 0) {
+            this.nodes.forEach(node => {
+                node.wanderTheta += Random.float(-node.wanderStep, node.wanderStep);
+                if ( // Bound off edges
+                    node.x < node.radius ||
+                    node.y > node.radius ||
+                    node.x > this.width - node.radius ||
+                    node.y > this.height - node.radius
+                ) {
+                    const dx = this.width / 2 - node.x;
+                    const dy = this.height / 2 - node.y;
+                    node.wanderTheta = Math.atan2(dy, dx);
+                }
+                node.x += Math.cos(node.wanderTheta) * node.wanderSpeed * wander * dt;
+                node.y += Math.sin(node.wanderTheta) * node.wanderSpeed * wander * dt;
+            });
+        }
         // Update synapses
         const color = Config.colors.synapse;
         this.connections.clear();
